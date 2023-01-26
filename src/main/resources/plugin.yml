@@ -1,0 +1,7 @@
+name: Flatworld
+version: '${project.version}'
+main: me.pvpb0t.flatworld.Flatworld
+api-version: 1.19
+authors: [ pvpb0t ]
+description: A plugin for the flatworld smp
+website: https://github.com/pvpb0t
