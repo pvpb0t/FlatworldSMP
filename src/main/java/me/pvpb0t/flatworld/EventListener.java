@@ -1,6 +1,8 @@
 package me.pvpb0t.flatworld;
 
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
@@ -44,12 +46,20 @@ public class EventListener implements Listener {
             int amount = result.getAmount();
 
             //Check if we should use 3x emeralds
-            if (Math.random() * 100 < threeXChance) {
+            double random = Math.random() * 100;
+            if ( random< threeXChance) {
                 amount *= 3;
-            }
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+                player.spigot().sendMessage(new TextComponent("You have been awarded 3x emeralds!"));
+
+            }else if(Math.random() * 100 < fiveXChance){
             //Check if we should use 5x emeralds
-            if (Math.random() * 100 < fiveXChance) {
+
                 amount *= 5;
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+
+                player.spigot().sendMessage(new TextComponent("You have been awarded 5x emeralds!"));
+
             }
 
 
