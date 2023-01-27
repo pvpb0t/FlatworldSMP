@@ -41,7 +41,6 @@ public class FarmListener implements Listener {
             if(blockType == Material.CARROTS || blockType == Material.WHEAT || blockType == Material.BEETROOTS || blockType == Material.POTATOES) {
                 ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
                 Material itemType = item.getType();
-                log.info(itemType.name());
 
                 // check that the player is holding a valid seed/crop
                 if (itemType == Material.CARROT || itemType == Material.BEETROOT_SEEDS || itemType == Material.WHEAT_SEEDS || itemType == Material.POTATO) {
@@ -49,7 +48,6 @@ public class FarmListener implements Listener {
                     // check that the crop is fully grown
                     if (blockData instanceof Ageable && ((Ageable) blockData).getAge() == ((Ageable) blockData).getMaximumAge()) {
 
-                        log.info(blockData.getAsString());
                         // check that the seed/crop being held matches the block being clicked
                         if (blockType == Material.CARROTS && itemType == Material.CARROT ||
                                 blockType == Material.BEETROOTS && itemType == Material.BEETROOT_SEEDS ||
