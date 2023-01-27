@@ -11,8 +11,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
-public class VillagerTradingListener implements Listener {
+import java.util.logging.Logger;
 
+public class VillagerTradingListener implements Listener {
+    public static Logger log = Logger.getLogger("Minecraft");
     private int threeXChance;
     private int fiveXChance;
 
