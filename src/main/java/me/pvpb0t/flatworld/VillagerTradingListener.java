@@ -7,19 +7,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.VillagerAcquireTradeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MerchantRecipe;
 
-public class EventListener implements Listener {
+public class VillagerTradingListener implements Listener {
 
     private int threeXChance;
     private int fiveXChance;
 
-    public EventListener(int threeXChance, int fiveXChance) {
+    public VillagerTradingListener(int threeXChance, int fiveXChance) {
         this.threeXChance = threeXChance;
         this.fiveXChance = fiveXChance;
     }

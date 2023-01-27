@@ -1,6 +1,5 @@
 package me.pvpb0t.flatworld;
 
-import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Flatworld extends JavaPlugin {
@@ -13,7 +12,9 @@ public final class Flatworld extends JavaPlugin {
         saveDefaultConfig();
         threeXChance = getConfig().getInt("3xchance");
         fiveXChance = getConfig().getInt("5xchance");
-        getServer().getPluginManager().registerEvents(new EventListener(threeXChance,fiveXChance), this);
+        getServer().getPluginManager().registerEvents(new VillagerTradingListener(threeXChance,fiveXChance), this);
+        getServer().getPluginManager().registerEvents(new FarmListener(), this);
+
     }
 
 
