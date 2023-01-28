@@ -1,6 +1,8 @@
 package me.pvpb0t.flatworld;
 
+import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -33,9 +35,7 @@ public class FarmListener implements Listener {
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Block block = e.getClickedBlock();
             assert block != null;
-            log.info(block.toString());
             Material blockType = block.getType();
-            log.info(blockType.name());
             final Player player = e.getPlayer();
 
             if(blockType == Material.CARROTS || blockType == Material.WHEAT || blockType == Material.BEETROOTS || blockType == Material.POTATOES) {
@@ -79,6 +79,9 @@ public class FarmListener implements Listener {
                             }
                             //e.getPlayer().getInventory().addItem(new ItemStack(blockType,3));
                             player.getInventory().addItem(new ItemStack(itemType, 3));
+                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_PLACE, 1, 2);
+                            player.playEffect(block.getLocation(), Effect.VILLAGER_PLANT_GROW, null);
+
 
                         }else {
 //if the player is not holding the correct item then dont plant the new crop and dont drop any items
@@ -88,9 +91,6 @@ public class FarmListener implements Listener {
 //if the crop is not fully grown then dont replant and dont drop any items
                         e.getPlayer().sendMessage("The crop is not fully grown yet");
                     }
-                }else {
-//if the block is not a crop block then dont replant and dont drop any items
-                    e.getPlayer().sendMessage("This is not a crop block");
                 }
             }
         }
