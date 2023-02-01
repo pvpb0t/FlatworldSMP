@@ -14,6 +14,9 @@ public final class Flatworld extends JavaPlugin {
         fiveXChance = getConfig().getInt("5xchance");
         getServer().getPluginManager().registerEvents(new VillagerTradingListener(threeXChance,fiveXChance), this);
         getServer().getPluginManager().registerEvents(new FarmListener(), this);
+        getServer().getPluginManager().registerEvents(new SlimeControl(), this);
+        getServer().getPluginManager().registerEvents(new ThunderControl(), this);
+
 
     }
 
