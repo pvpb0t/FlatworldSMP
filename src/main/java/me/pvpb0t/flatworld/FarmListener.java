@@ -4,6 +4,7 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
@@ -80,7 +81,7 @@ public class FarmListener implements Listener {
                             //e.getPlayer().getInventory().addItem(new ItemStack(blockType,3));
                             player.getInventory().addItem(new ItemStack(itemType, 3));
                             player.playSound(player.getLocation(), Sound.BLOCK_GRASS_PLACE, 1, 2);
-                            player.playEffect(block.getLocation(), Effect.BONE_MEAL_USE, null);
+                            player.playEffect(block.getLocation(), Effect.STEP_SOUND, Material.SUGAR_CANE.createBlockData());
 
 
                         } else {
@@ -92,24 +93,32 @@ public class FarmListener implements Listener {
                         e.getPlayer().sendMessage("The crop is not fully grown yet");
                     }
                 }
-
+                //DO THE SAME WITH SUGAR CANESS
             } else if (blockType == Material.SUGAR_CANE) {
-                int count = 0;
+                ItemStack itemInHand = player.getInventory().getItemInMainHand();
+                if (!itemInHand.getType().equals(Material.SUGAR_CANE) && (itemInHand.getType().toString().contains("HOE"))) {
+                    int count = 0;
                 int currentPos = block.getY();
-                Block currentBlock = block;
-                Material currentBlockType = block.getType();
-                while(currentBlockType==Material.SUGAR_CANE ){
+                while (true) {
+                    Block currentBlock = block.getWorld().getBlockAt(block.getX(), currentPos, block.getZ());
+                    Material currentBlockType = currentBlock.getType();
+                    if (currentBlockType != Material.SUGAR_CANE) {
+                        break;
+                    }
                     count++;
-                    currentPos++;
                     currentBlock.setType(Material.AIR);
-                    currentBlock = block.getWorld().getBlockAt(block.getX(), currentPos, block.getZ());
-                    currentBlockType = currentBlock.getType();
+                    currentPos++;
                 }
-                ItemStack sugarCane = new ItemStack(Material.SUGAR_CANE, count);
-                player.getInventory().addItem(sugarCane);
+                block.setType(Material.AIR);
+                player.getInventory().addItem(new ItemStack(Material.SUGAR_CANE, count + 1));
+                player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 2, 0.5f);
+                player.playEffect(block.getLocation(), Effect.SMOKE, Material.SUGAR_CANE.createBlockData());
             }
         }
 
 
+
+
+        }
     }
 }
