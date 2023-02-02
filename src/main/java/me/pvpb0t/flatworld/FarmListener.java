@@ -17,7 +17,7 @@ import static me.pvpb0t.flatworld.VillagerTradingListener.log;
 
 public class FarmListener implements Listener {
 
-    public FarmListener(){
+    public FarmListener() {
 
     }
 
@@ -38,7 +38,7 @@ public class FarmListener implements Listener {
             Material blockType = block.getType();
             final Player player = e.getPlayer();
 
-            if(blockType == Material.CARROTS || blockType == Material.WHEAT || blockType == Material.BEETROOTS || blockType == Material.POTATOES) {
+            if (blockType == Material.CARROTS || blockType == Material.WHEAT || blockType == Material.BEETROOTS || blockType == Material.POTATOES) {
                 ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
                 Material itemType = item.getType();
 
@@ -73,28 +73,43 @@ public class FarmListener implements Listener {
                             } else if (itemType == Material.WHEAT_SEEDS) {
                                 block.setType(Material.WHEAT);
                                 block.setBlockData(Material.WHEAT.createBlockData());
-                            }else if (itemType == Material.POTATO) {
+                            } else if (itemType == Material.POTATO) {
                                 block.setType(Material.POTATOES);
                                 block.setBlockData(Material.POTATOES.createBlockData());
                             }
                             //e.getPlayer().getInventory().addItem(new ItemStack(blockType,3));
                             player.getInventory().addItem(new ItemStack(itemType, 3));
                             player.playSound(player.getLocation(), Sound.BLOCK_GRASS_PLACE, 1, 2);
-                            player.playEffect(block.getLocation(), Effect.VILLAGER_PLANT_GROW, null);
+                            player.playEffect(block.getLocation(), Effect.BONE_MEAL_USE, null);
 
 
-                        }else {
+                        } else {
 //if the player is not holding the correct item then dont plant the new crop and dont drop any items
                             e.getPlayer().sendMessage("You need to hold the correct seed to replant the crop");
                         }
-                    }else {
+                    } else {
 //if the crop is not fully grown then dont replant and dont drop any items
                         e.getPlayer().sendMessage("The crop is not fully grown yet");
                     }
                 }
+
+            } else if (blockType == Material.SUGAR_CANE) {
+                int count = 0;
+                int currentPos = block.getY();
+                Block currentBlock = block;
+                Material currentBlockType = block.getType();
+                while(currentBlockType==Material.SUGAR_CANE ){
+                    count++;
+                    currentPos++;
+                    currentBlock.setType(Material.AIR);
+                    currentBlock = block.getWorld().getBlockAt(block.getX(), currentPos, block.getZ());
+                    currentBlockType = currentBlock.getType();
+                }
+                ItemStack sugarCane = new ItemStack(Material.SUGAR_CANE, count);
+                player.getInventory().addItem(sugarCane);
             }
         }
+
+
     }
-
-
 }
