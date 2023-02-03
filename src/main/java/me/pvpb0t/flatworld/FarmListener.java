@@ -88,10 +88,7 @@ public class FarmListener implements Listener {
 //if the player is not holding the correct item then dont plant the new crop and dont drop any items
                             e.getPlayer().sendMessage("You need to hold the correct seed to replant the crop");
                         }
-                    } else {
-//if the crop is not fully grown then dont replant and dont drop any items
-                        e.getPlayer().sendMessage("The crop is not fully grown yet");
-                    }
+                    } 
                 }
                 //DO THE SAME WITH SUGAR CANESS
             } else if (blockType == Material.SUGAR_CANE) {
