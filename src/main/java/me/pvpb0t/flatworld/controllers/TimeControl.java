@@ -1,0 +1,164 @@
+package me.pvpb0t.flatworld.controllers;
+
+import me.pvpb0t.flatworld.Flatworld;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+
+import java.util.Calendar;
+import java.util.Random;
+
+public class TimeControl extends Control{
+    public TimeControl(boolean toggle) {
+        super(toggle);
+    }
+
+    private long lastMinute;
+    private long lastMonth;
+    private String parsedInGameTime;
+    private long ingameTime;
+    private String ingameSeason;
+    private String ingameWeather;
+    private final String levelName= "world";
+
+    public void updateTime() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int month = calendar.get(Calendar.MONTH) + 1;
+
+
+
+        if(lastMinute!=minute){
+            lastMinute=minute;
+            parsedInGameTime = hour + ":" + String.format("%02d", minute);
+            ingameTime = hour * 60 + minute;
+            World survivalWorld = Bukkit.getWorld(levelName);
+            assert survivalWorld != null;
+            survivalWorld.setTime(ingameTime);
+            switch (month) {
+                case 12:
+                case 1:
+                case 2:
+                    ingameSeason = "Winter";
+                    break;
+                case 3:
+                case 4:
+                case 5:
+                    ingameSeason = "Spring";
+                    break;
+                case 6:
+                case 7:
+                case 8:
+                    ingameSeason = "Summer";
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                    ingameSeason = "Autumn";
+                    break;
+                default:
+                    ingameSeason = "Unknown";
+                    break;
+            }
+
+            switch (ingameSeason) {
+                case "Winter":
+                    Random rand = new Random();
+                    int chance = rand.nextInt(100);
+                    if (chance <= 90) {
+                        ingameWeather = "Snowing";
+                        survivalWorld.setStorm(true);
+                        survivalWorld.setThundering(false);
+                    } else {
+                        ingameWeather = "Clear";
+                        survivalWorld.setStorm(false);
+                    }
+                    break;
+                case "Spring":
+                    rand = new Random();
+                    chance = rand.nextInt(100);
+                    if (chance <= 20) {
+                        ingameWeather = "Raining";
+                        survivalWorld.setStorm(true);
+                        survivalWorld.setThundering(false);
+                    } else {
+                        ingameWeather = "Clear";
+                        survivalWorld.setStorm(false);
+                    }
+                    break;
+                case "Summer":
+                    rand = new Random();
+                    chance = rand.nextInt(100);
+                    if (chance <= 25) {
+                        ingameWeather = "Raining";
+                        survivalWorld.setStorm(true);
+                        survivalWorld.setThundering(false);
+                    } else {
+                        ingameWeather = "Clear";
+                        survivalWorld.setStorm(false);
+                    }
+                    break;
+                case "Autumn":
+                    rand = new Random();
+                    chance = rand.nextInt(100);
+                    if (chance <= 75) {
+                        ingameWeather = "Raining";
+                        survivalWorld.setStorm(true);
+                        survivalWorld.setThundering(false);
+                    } else {
+                        ingameWeather = "Clear";
+                        survivalWorld.setStorm(false);
+                    }
+                    break;
+                default:
+                    ingameWeather = "Unknown";
+                    survivalWorld.setStorm(false);
+                    break;
+            }
+/*
+            for (Chunk chunk : survivalWorld.getLoadedChunks()) {
+                Bukkit.getLogger().info(ingameSeason);
+                for (int x = 0; x < 16; x++) {
+                    for (int z = 0; z < 16; z++) {
+                        Block block = chunk.getBlock(x, 0, z);
+                        switch (ingameSeason) {
+                            case "Winter":
+                                block.setBiome(Biome.SNOWY_TAIGA);
+                                break;
+                            case "Spring":
+                            case "Summer":
+                                block.setBiome(Biome.PLAINS);
+                                break;
+                            case "Autumn":
+                                block.setBiome(Biome.FOREST);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }*/
+
+
+
+        }
+
+
+
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Component header = Component.text("Welcome to " + Flatworld.pluginName)
+                    .color(NamedTextColor.GOLD)
+                    .decoration(TextDecoration.BOLD, true);
+            Component footer = Component.text("Time: " + parsedInGameTime + "  Season: " + ingameSeason + "  Weather: " + ingameWeather)
+                    .color(NamedTextColor.AQUA)
+                    .decoration(TextDecoration.ITALIC, true);
+            player.sendPlayerListHeaderAndFooter(header, footer);
+        }
+    }
+
+}

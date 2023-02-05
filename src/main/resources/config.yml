@@ -2,3 +2,5 @@
 5xchance: 5
 disable-thunder: true
 disable-slime: true
+sync-time: true
+

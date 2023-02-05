@@ -1,10 +1,9 @@
-package me.pvpb0t.flatworld;
+package me.pvpb0t.flatworld.controllers;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SlimeControl extends Control implements Listener {
 

@@ -1,4 +1,4 @@
-package me.pvpb0t.flatworld;
+package me.pvpb0t.flatworld.controllers;
 
 public class Control {
 

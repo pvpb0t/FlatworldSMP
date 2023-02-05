@@ -1,4 +1,4 @@
-package me.pvpb0t.flatworld;
+package me.pvpb0t.flatworld.controllers;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
