@@ -8,3 +8,4 @@ Currently has the following features:
 - [x] Sugar cane farming with hoe
 - [x] Disabled Slimes
 - [x] Disabled Thunder
+- [x] Sync Time and Season to IRL
