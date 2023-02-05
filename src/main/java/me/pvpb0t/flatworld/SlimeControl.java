@@ -6,20 +6,25 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class SlimeControl implements Listener {
+public class SlimeControl extends Control implements Listener {
 
-    public SlimeControl(){
 
+
+    public SlimeControl(boolean enable){
+    super(enable);
     }
 
 
     @EventHandler
     public void onSpawn(EntitySpawnEvent e) {
-        if(e.getEntity().getName().equalsIgnoreCase("slime")){
-            e.setCancelled(true);
+        if(this.isEnabled()){
+            if(e.getEntity().getName().equalsIgnoreCase("slime")){
+                e.setCancelled(true);
+            }
+            if(e.getEntityType() == EntityType.SLIME)
+                e.setCancelled(true);
         }
-        if(e.getEntityType() == EntityType.SLIME)
-            e.setCancelled(true);
+
     }
 
 }
