@@ -5,7 +5,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import java.util.Calendar;
@@ -20,7 +25,7 @@ public class TimeControl extends Control{
     private long lastMonth;
     private String parsedInGameTime;
     private long ingameTime;
-    private String ingameSeason;
+    private Season ingameSeason;
     private String ingameWeather;
     private final String levelName= "world";
 
@@ -37,36 +42,38 @@ public class TimeControl extends Control{
             parsedInGameTime = hour + ":" + String.format("%02d", minute);
             ingameTime = hour * 60 + minute;
             World survivalWorld = Bukkit.getWorld(levelName);
+
             assert survivalWorld != null;
             survivalWorld.setTime(ingameTime);
             switch (month) {
                 case 12:
                 case 1:
                 case 2:
-                    ingameSeason = "Winter";
+                    ingameSeason = Season.Winter;
                     break;
                 case 3:
                 case 4:
                 case 5:
-                    ingameSeason = "Spring";
+                    ingameSeason = Season.Spring;
                     break;
                 case 6:
                 case 7:
                 case 8:
-                    ingameSeason = "Summer";
+                    ingameSeason = Season.Summer;
                     break;
                 case 9:
                 case 10:
                 case 11:
-                    ingameSeason = "Autumn";
+                    ingameSeason = Season.Autumn;
                     break;
                 default:
-                    ingameSeason = "Unknown";
+                    ingameSeason = Season.None;
+
                     break;
             }
 
             switch (ingameSeason) {
-                case "Winter":
+                case Winter:
                     Random rand = new Random();
                     int chance = rand.nextInt(100);
                     if (chance <= 90) {
@@ -78,7 +85,7 @@ public class TimeControl extends Control{
                         survivalWorld.setStorm(false);
                     }
                     break;
-                case "Spring":
+                case Spring:
                     rand = new Random();
                     chance = rand.nextInt(100);
                     if (chance <= 20) {
@@ -90,7 +97,7 @@ public class TimeControl extends Control{
                         survivalWorld.setStorm(false);
                     }
                     break;
-                case "Summer":
+                case Summer:
                     rand = new Random();
                     chance = rand.nextInt(100);
                     if (chance <= 25) {
@@ -102,7 +109,7 @@ public class TimeControl extends Control{
                         survivalWorld.setStorm(false);
                     }
                     break;
-                case "Autumn":
+                case Autumn:
                     rand = new Random();
                     chance = rand.nextInt(100);
                     if (chance <= 75) {
@@ -119,6 +126,11 @@ public class TimeControl extends Control{
                     survivalWorld.setStorm(false);
                     break;
             }
+
+            generateSeason(survivalWorld, ingameSeason);
+
+
+
 /*
             for (Chunk chunk : survivalWorld.getLoadedChunks()) {
                 Bukkit.getLogger().info(ingameSeason);
@@ -149,7 +161,6 @@ public class TimeControl extends Control{
 
 
 
-
         for (Player player : Bukkit.getOnlinePlayers()) {
             Component header = Component.text("Welcome to " + Flatworld.pluginName)
                     .color(NamedTextColor.GOLD)
@@ -160,5 +171,49 @@ public class TimeControl extends Control{
             player.sendPlayerListHeaderAndFooter(header, footer);
         }
     }
+
+
+    public void generateSeason(World world, Season season) {
+        for (Chunk chunk : world.getLoadedChunks()) {
+            for (int x = 0; x < 16; x++) {
+                for (int y = -64; y < 0; y++) {
+                    for (int z = 0; z < 16; z++) {
+                        Block block = chunk.getBlock(x, y, z);
+
+                        if (block.getType() == Material.AIR)
+                            continue;
+
+                        switch (season) {
+                            case Winter:
+                                if (block.getType() == Material.GRASS_BLOCK && block.getBiome() == Biome.PLAINS) {
+                                    Block above = chunk.getBlock(x, y + 1, z);
+                                    if (above.getType() == Material.AIR) {
+                                        above.setType(Material.SNOW);
+                                    }
+                                }
+                                break;
+                            case Summer:
+                                Block above = chunk.getBlock(x, y + 1, z);
+                                if (above.getType() == Material.SNOW) {
+                                    above.setType(Material.AIR);
+                                }
+                                break;
+                            case Autumn:
+                            case Spring:
+                            case None:
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
 
 }
