@@ -1,4 +1,4 @@
-package me.pvpb0t.flatworld.controllers;
+package me.pvpb0t.flatworld.controllers.timesync;
 
 public enum Season {
 

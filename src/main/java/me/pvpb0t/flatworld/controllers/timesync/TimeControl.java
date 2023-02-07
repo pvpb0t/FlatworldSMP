@@ -1,6 +1,7 @@
-package me.pvpb0t.flatworld.controllers;
+package me.pvpb0t.flatworld.controllers.timesync;
 
 import me.pvpb0t.flatworld.Flatworld;
+import me.pvpb0t.flatworld.controllers.Control;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -10,13 +11,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import java.util.Calendar;
 import java.util.Random;
 
-public class TimeControl extends Control{
+public class TimeControl extends Control {
     public TimeControl(boolean toggle) {
         super(toggle);
     }
