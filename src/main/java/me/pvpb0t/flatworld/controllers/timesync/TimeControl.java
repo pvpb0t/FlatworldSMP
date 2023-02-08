@@ -40,11 +40,16 @@ public class TimeControl extends Control {
         if (lastMinute != minute) {
             lastMinute = minute;
             int totalMinutes = hour * 60 + minute;
-            int inGameTicks = (totalMinutes * 1000) % 24000;
+            ingameTime = (totalMinutes * 1000) % 24000;
             World survivalWorld = Bukkit.getWorld(levelName);
 
             assert survivalWorld != null;
-            survivalWorld.setTime(inGameTicks);
+            survivalWorld.setTime(ingameTime);
+            int hours = (int) (ingameTime / 1000) % 24;
+            int minutes = (int) ((ingameTime / (1000 * 60)) % 60);
+            parsedInGameTime = String.format("%02d:%02d", hours, minutes);
+
+
             switch (month) {
                 case 12:
                 case 1:
