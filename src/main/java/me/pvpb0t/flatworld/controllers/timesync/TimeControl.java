@@ -185,19 +185,18 @@ public class TimeControl extends Control implements Listener {
     public void onBlockFade(BlockFadeEvent event) {
         if(ingameSeason == Season.Winter){
         if (event.getBlock().getType().equals(Material.SNOW)) {
-            event.setCancelled(true);
-        }}}
+            event.setCancelled(true);}}}
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        generateSeason(survivalWorld, ingameSeason, event.getChunk());
+        generateSeason( ingameSeason, event.getChunk() );
 
       /*  if (event.isNewChunk()) {
         }*/
     }
 
 
-    public void generateSeason(World world, Season season, Chunk chunk) {
+    public void generateSeason( Season season, Chunk chunk ) {
             for (int x = 0; x < 16; x++) {
                 for (int y = -64; y < 0; y++) {
                     for (int z = 0; z < 16; z++) {
