@@ -12,11 +12,15 @@ import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockFadeEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 
 import java.util.Calendar;
 import java.util.Random;
 
-public class TimeControl extends Control {
+public class TimeControl extends Control implements Listener {
     public TimeControl(boolean toggle) {
         super(toggle);
     }
@@ -28,6 +32,8 @@ public class TimeControl extends Control {
     private Season ingameSeason;
     private String ingameWeather;
     private final String levelName= "world";
+    private final World survivalWorld = Bukkit.getWorld(levelName);
+
 
     public void updateTime() {
         Calendar calendar = Calendar.getInstance();
@@ -41,7 +47,6 @@ public class TimeControl extends Control {
             lastMinute = minute;
             int totalMinutes = hour * 60 + minute;
             ingameTime = (totalMinutes * 1000) % 24000;
-            World survivalWorld = Bukkit.getWorld(levelName);
 
             assert survivalWorld != null;
             survivalWorld.setTime(ingameTime);
@@ -132,7 +137,6 @@ public class TimeControl extends Control {
                     break;
             }
 
-            generateSeason(survivalWorld, ingameSeason);
 
 
 
@@ -177,9 +181,23 @@ public class TimeControl extends Control {
         }
     }
 
+    @EventHandler
+    public void onBlockFade(BlockFadeEvent event) {
+        if(ingameSeason == Season.Winter){
+        if (event.getBlock().getType().equals(Material.SNOW)) {
+            event.setCancelled(true);
+        }}}
 
-    public void generateSeason(World world, Season season) {
-        for (Chunk chunk : world.getLoadedChunks()) {
+    @EventHandler
+    public void onChunkLoad(ChunkLoadEvent event) {
+        generateSeason(survivalWorld, ingameSeason, event.getChunk());
+
+      /*  if (event.isNewChunk()) {
+        }*/
+    }
+
+
+    public void generateSeason(World world, Season season, Chunk chunk) {
             for (int x = 0; x < 16; x++) {
                 for (int y = -64; y < 0; y++) {
                     for (int z = 0; z < 16; z++) {
@@ -210,7 +228,7 @@ public class TimeControl extends Control {
                         }
                     }
                 }
-            }
+
         }
     }
 
